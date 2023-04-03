@@ -26,7 +26,7 @@ let pipeY = 0;
 
 let topPipeImg;
 let bottomPipeImg;
-let gap = 50;
+let gap = 600;
 
 //fysiikat
 let velocityX = -0.9; 
@@ -56,7 +56,12 @@ window.onload = function() {
 
 function update() {
     requestAnimationFrame(update);
-    context.clearRect(0, 0, board.width, board.height)
+    context.clearRect(0, 0, board.width, board.height);
+    bird.y += 1
+
+    if(bird.y >= board.height) {
+        reset()
+    }
 
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
 
@@ -64,7 +69,7 @@ function update() {
         let pipe = pipeArray[i];
         pipe.x += velocityX;
         context.drawImage(topPipeImg, pipe.x, pipe.y, pipe.width, pipe.height);
-        context.drawImage(bottomPipeImg, pipe.x, pipe.y + 600, pipe.width, pipe.height)
+        context.drawImage(bottomPipeImg, pipe.x, pipe.y + gap, pipe.width, pipe.height)
     }
 }
 
@@ -83,3 +88,15 @@ function placePipes() {
 
     pipeArray.push(pipe);
 }
+
+function click() {
+    bird.y -= 50
+}
+
+function reset() {
+    bird.y = birdY
+    bird.x = birdX
+    pipeArray = []
+}
+
+window.addEventListener("click", click);
