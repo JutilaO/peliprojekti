@@ -26,6 +26,7 @@ let pipeY = 0;
 
 let topPipeImg;
 let bottomPipeImg;
+let gap = 50;
 
 //fysiikat
 let velocityX = -0.9; 
@@ -38,16 +39,16 @@ window.onload = function() {
 
     //lataa kuvat
     birdImg = new Image();
-    birdImg.src = "flappybird.png";
+    birdImg.src = "./images/flappybird.png";
     birdImg.onload = function() {
         context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
     }
 
     topPipeImg = new Image();
-    topPipeImg.src = "toppipe.png"
+    topPipeImg.src = "./images/toppipe.png"
 
     bottomPipeImg = new Image();
-    bottomPipeImg.src = "bottompipe.png"
+    bottomPipeImg.src = "./images/bottompipe.png"
 
     requestAnimationFrame(update);
     setInterval(placePipes, 1500); //laittaa putken joka 1,5 sec
@@ -62,20 +63,23 @@ function update() {
     for (let i = 0; i < pipeArray.length; i++) {
         let pipe = pipeArray[i];
         pipe.x += velocityX;
-        context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height);
+        context.drawImage(topPipeImg, pipe.x, pipe.y, pipe.width, pipe.height);
+        context.drawImage(bottomPipeImg, pipe.x, pipe.y + 600, pipe.width, pipe.height)
     }
 }
 
 function placePipes() {
+    let y = 420
+    if(pipeArray.length) y = pipeArray[pipeArray.length - 1].y
+    if(y <= 0) y = 420
 
-    let topPipe = {
-        img : topPipeImg,
+    let pipe = {
         x : pipeX,
-        y : pipeY,
+        y : Math.floor(Math.random() * y + 1) - y,
         width : pipeWidth,
         height : pipeHeight,
         passed : false
     }
 
-    pipeArray.push(topPipe);
+    pipeArray.push(pipe);
 }
